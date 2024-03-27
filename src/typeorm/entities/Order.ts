@@ -45,7 +45,7 @@ export class Order {
   @Column("timestamp", { name: "updated_at", nullable: true })
   updatedAt: Date | null;
 
-  @OneToMany(() => OrderDetail, orderdetail => orderdetail.order)
+  @OneToMany(() => OrderDetail, orderdetail => orderdetail.order, {cascade:true})
   orderdetails: OrderDetail[];
 
   @ManyToOne(() => User, user=> user.orders)

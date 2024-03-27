@@ -1,3 +1,5 @@
+import { CreateProductcategoryDto } from "src/api/productcategories/dto/create-productcategory.dto";
+
 export class CreateProductDto {
     name: string;
     qty: number;
@@ -6,4 +8,5 @@ export class CreateProductDto {
     slug: string;
     image: string;
     description: string;
+    categories: CreateProductcategoryDto[];
 }

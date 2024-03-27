@@ -12,7 +12,10 @@ export class OrdersService {
 
   async create(createOrderDto: CreateOrderDto) {
     const order = this.orderrepo.create(createOrderDto);
-    return await this.orderrepo.save(order);
+    await this.orderrepo.save(order);
+    // if(order.orderdetails.length > 0){
+    //   return order.orderdetails.length;
+    // }
   }
 
   async findAll() {
