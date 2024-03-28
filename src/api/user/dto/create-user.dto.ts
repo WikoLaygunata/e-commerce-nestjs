@@ -3,7 +3,7 @@ import { IsEmail, IsEnum, IsNumber, IsNumberString, MinLength } from "class-vali
 export class CreateUserDto {
     @MinLength(4)
     username: string;
-    @MinLength(4)
+    @MinLength(3)
     name: string;
     @MinLength(8)
     password: string;

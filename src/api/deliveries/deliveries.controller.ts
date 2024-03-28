@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
 import { DeliveriesService } from './deliveries.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
@@ -8,7 +8,7 @@ export class DeliveriesController {
   constructor(private readonly deliveriesService: DeliveriesService) {}
 
   @Post()
-  async create(@Body() createDeliveryDto: CreateDeliveryDto) {
+  async create(@Body(ValidationPipe) createDeliveryDto: CreateDeliveryDto) {
     return this.deliveriesService.create(createDeliveryDto);
   }
 
@@ -23,7 +23,7 @@ export class DeliveriesController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateDeliveryDto: UpdateDeliveryDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updateDeliveryDto: UpdateDeliveryDto) {
     return this.deliveriesService.update(+id, updateDeliveryDto);
   }
 

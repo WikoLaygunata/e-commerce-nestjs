@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
 import { ProductcategoriesService } from './productcategories.service';
 import { CreateProductcategoryDto } from './dto/create-productcategory.dto';
 import { UpdateProductcategoryDto } from './dto/update-productcategory.dto';
@@ -8,7 +8,7 @@ export class ProductcategoriesController {
   constructor(private readonly productcategoriesService: ProductcategoriesService) {}
 
   @Post()
-  async create(@Body() createProductcategoryDto: CreateProductcategoryDto) {
+  async create(@Body(ValidationPipe) createProductcategoryDto: CreateProductcategoryDto) {
     return this.productcategoriesService.create(createProductcategoryDto);
   }
 
@@ -23,7 +23,7 @@ export class ProductcategoriesController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateProductcategoryDto: UpdateProductcategoryDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updateProductcategoryDto: UpdateProductcategoryDto) {
     return this.productcategoriesService.update(+id, updateProductcategoryDto);
   }
 

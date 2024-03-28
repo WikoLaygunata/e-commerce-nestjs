@@ -8,7 +8,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 

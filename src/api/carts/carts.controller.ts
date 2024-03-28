@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
 import { CartsService } from './carts.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -8,7 +8,7 @@ export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
 
   @Post()
-  async create(@Body() createCartDto: CreateCartDto) {
+  async create(@Body(ValidationPipe) createCartDto: CreateCartDto) {
     return this.cartsService.create(createCartDto);
   }
 
@@ -23,7 +23,7 @@ export class CartsController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updateCartDto: UpdateCartDto) {
     return this.cartsService.update(+id, updateCartDto);
   }
 

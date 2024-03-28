@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
 import { OrderdetailsService } from './orderdetails.service';
 import { CreateOrderdetailDto } from './dto/create-orderdetail.dto';
 import { UpdateOrderdetailDto } from './dto/update-orderdetail.dto';
@@ -8,7 +8,7 @@ export class OrderdetailsController {
   constructor(private readonly orderdetailsService: OrderdetailsService) {}
 
   @Post()
-  async create(@Body() createOrderdetailDto: CreateOrderdetailDto) {
+  async create(@Body(ValidationPipe) createOrderdetailDto: CreateOrderdetailDto) {
     return this.orderdetailsService.create(createOrderdetailDto);
   }
 
@@ -23,7 +23,7 @@ export class OrderdetailsController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateOrderdetailDto: UpdateOrderdetailDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updateOrderdetailDto: UpdateOrderdetailDto) {
     return this.orderdetailsService.update(+id, updateOrderdetailDto);
   }
 

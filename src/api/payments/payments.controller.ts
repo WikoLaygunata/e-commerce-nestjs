@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -8,7 +8,7 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  async create(@Body() createPaymentDto: CreatePaymentDto) {
+  async create(@Body(ValidationPipe) createPaymentDto: CreatePaymentDto) {
     return this.paymentsService.create(createPaymentDto);
   }
 
@@ -23,7 +23,7 @@ export class PaymentsController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updatePaymentDto: UpdatePaymentDto) {
     return this.paymentsService.update(+id, updatePaymentDto);
   }
 
