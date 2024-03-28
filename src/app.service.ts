@@ -21,14 +21,15 @@ export class AppService {
   }
 
   async seed(){
-    const product = await this.productrepo.findOne({where:{id:1}, relations:['categories']});
+    return;
+    //const product = await this.productrepo.findOne({where:{id:1}, relations:['categories']});
     //const category = this.categoryrepo.create({name:"halo", slug:"world"});
-    const category = this.categoryrepo.findOne({where:{id:1}, relations:{products:true}});
-    (await category).products = [product];
-    await this.categoryrepo.save(await category);
+    //const category = this.categoryrepo.findOne({where:{id:1}, relations:{products:true}});
+    //(await category).products = [product];
+    //await this.categoryrepo.save(await category);
     //(await product).categories = [category];
     //await this.productrepo.save(product as any);
-    return category;
+    //return category;
 
     
     //const user = this.userrepo.findOne({where:{username: 'g'},relations:['carts']})
