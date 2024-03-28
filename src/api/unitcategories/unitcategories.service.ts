@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUnitcategoryDto } from './dto/create-unitcategory.dto';
 import { UpdateUnitcategoryDto } from './dto/update-unitcategory.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,14 +20,20 @@ export class UnitcategoriesService {
   }
 
   async findOne(id: number) {
-    return await this.unitcategoryrepo.findOne({where: {id:id}, relations:{products:true}});
+    var data = await this.unitcategoryrepo.findOne({where: {id:id}, relations:{products:true}});
+    if(!data) throw new NotFoundException();
+    return data;
   }
 
   async update(id: number, updateUnitcategoryDto: UpdateUnitcategoryDto) {
+    var data = await this.unitcategoryrepo.findOne({where: {id:id}});
+    if(!data) throw new NotFoundException();
     return await this.unitcategoryrepo.update({id}, {...updateUnitcategoryDto, updatedAt: new Date()});
   }
 
   async remove(id: number) {
+    var data = await this.unitcategoryrepo.findOne({where: {id:id}});
+    if(!data) throw new NotFoundException();
     return await this.unitcategoryrepo.delete({id});
   }
 }

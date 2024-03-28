@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,14 +20,20 @@ export class DeliveriesService {
   }
 
   async findOne(id: number) {
-    return await this.deliveryrepo.findOne({where: {id:id}, relations:{order:true}});
+    var data = await this.deliveryrepo.findOne({where: {id:id}, relations:{order:true}});
+    if(!data) throw new NotFoundException();
+    return data;
   }
 
   async update(id: number, updateDeliveryDto: UpdateDeliveryDto) {
+    var data = await this.deliveryrepo.findOne({where: {id:id}});
+    if(!data) throw new NotFoundException();
     return await this.deliveryrepo.update({id}, {...updateDeliveryDto, updatedAt: new Date()});
   }
 
   async remove(id: number) {
+    var data = await this.deliveryrepo.findOne({where: {id:id}});
+    if(!data) throw new NotFoundException();
     return await this.deliveryrepo.delete({id});
   }
 }

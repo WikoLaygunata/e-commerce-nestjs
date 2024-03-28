@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,14 +20,20 @@ export class CartsService {
   }
 
   async findOne(id: number) {
-    return await this.cartRepo.findOne({where: {id:id}, relations:{cartdetails:true, user:true}});
+    var data = await this.cartRepo.findOne({where: {id:id}, relations:{cartdetails:true, user:true}});
+    if(!data) throw new NotFoundException();
+    return data;
   }
 
   async update(id: number, updateCartDto: UpdateCartDto) {
+    var data = await this.cartRepo.findOne({where: {id:id}});
+    if(!data) throw new NotFoundException();
     return await this.cartRepo.update({id}, {...updateCartDto, updatedAt: new Date()});
   }
 
   async remove(id: number) {
+    var data = await this.cartRepo.findOne({where: {id:id}});
+    if(!data) throw new NotFoundException();
     return await this.cartRepo.delete({id});
   }
 }
