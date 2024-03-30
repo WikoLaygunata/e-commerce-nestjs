@@ -17,10 +17,14 @@ import { User } from './typeorm/entities/User';
 import { Cart } from './typeorm/entities/Cart';
 import { Categories } from './typeorm/entities/Categories';
 import { Product } from './typeorm/entities/Product';
+import { AuthModule } from './auth/auth/auth.module';
+import { AuthGuard } from './auth/auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}), 
+    JwtModule,ConfigModule.forRoot({isGlobal: true}), 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) =>({
@@ -44,8 +48,13 @@ import { Product } from './typeorm/entities/Product';
     PaymentsModule,
     OrdersModule,
     OrderdetailsModule,
-    DeliveriesModule],
+    DeliveriesModule,
+    AuthModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+    provide: APP_GUARD,
+    useClass: AuthGuard,
+  },],
 })
 export class AppModule {}

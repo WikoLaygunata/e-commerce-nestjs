@@ -25,6 +25,12 @@ export class UserService {
     return data;
   }
 
+  async findUsername(username: string) {
+    var data = await this.userRepo.findOne({where: {username: username}, relations: {carts: true}});
+    if(!data) throw new NotFoundException();
+    return data;
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     var data = await this.userRepo.findOne({where: {id: id}});
     if(!data) throw new NotFoundException();
