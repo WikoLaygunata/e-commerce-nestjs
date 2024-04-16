@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth/auth/auth.service';
-import { AuthGuard } from './auth/auth/auth.guard';
 import { Public } from './ispublic.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
@@ -17,6 +17,12 @@ export class AppController {
   @Get('protected')
   gethello(@Request() req){
     return 'kkk';
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  getme(){
+    return 
   }
 
 
