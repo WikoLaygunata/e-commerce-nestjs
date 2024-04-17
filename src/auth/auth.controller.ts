@@ -22,5 +22,4 @@ export class AuthController {
     return this.authService.validateUser(req.user);
   }
 
-
 }

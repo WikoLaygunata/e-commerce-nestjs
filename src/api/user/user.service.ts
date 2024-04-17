@@ -15,8 +15,12 @@ export class UserService {
     return await this.userRepo.save(user);
   }
 
-  async findAll() {
-    return await this.userRepo.find({relations: ['carts']});
+  async findAll(params? : any) {
+    let data = await this.userRepo.find({relations: ['carts']});
+    if(params.name){
+      data = (await data).filter(x=>x.name.toLowerCase().includes(params.name.toLowerCase()));
+    }
+    return data;
   }
 
   async validateUser(username: string, password: string): Promise<User> {

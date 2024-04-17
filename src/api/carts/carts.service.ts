@@ -15,8 +15,12 @@ export class CartsService {
     return await this.cartRepo.save(cart);
   }
 
-  async findAll() {
-    return await this.cartRepo.find({relations: {cartdetails:true}});
+  async findAll(params?: any) {
+    let data = await this.cartRepo.find({relations: {cartdetails:true}});
+    if(params.status){
+      data = (await data).filter(x=>x.status === params.status);
+    }
+    return data;
   }
 
   async findOne(id: number) {

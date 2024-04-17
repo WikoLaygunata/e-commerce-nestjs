@@ -15,8 +15,12 @@ export class ProductcategoriesService {
     return await this.categoryrepo.save(unitcategory);
     }
 
-  async findAll() {
-    return await this.categoryrepo.find({relations: {products:false}});
+  async findAll(params?: any) {
+    let data = await this.categoryrepo.find({relations: {products:false}});
+    if(params.name){
+      data = (await data).filter(x=>x.name.toLowerCase().includes(params.name.toLowerCase()));
+    }
+    return data;
   }
 
   async findOne(id: number) {

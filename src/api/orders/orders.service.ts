@@ -15,8 +15,12 @@ export class OrdersService {
     await this.orderrepo.save(order);
   }
 
-  async findAll() {
-    return await this.orderrepo.find({relations: {user:true, delivery: true, payment: true}});
+  async findAll(params? : any) {
+    let data = await this.orderrepo.find({relations: {user:true, delivery: true, payment: true}});
+    if(params.status){
+      data = (await data).filter(x=>x.status === params.status);
+    }
+    return data;
   }
 
   async findOne(id: number) {
