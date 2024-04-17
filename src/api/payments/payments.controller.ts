@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe, Query } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -13,8 +13,8 @@ export class PaymentsController {
   }
 
   @Get()
-  async findAll() {
-    return this.paymentsService.findAll();
+  async findAll(@Query() params: any) {
+    return this.paymentsService.findAll(params);
   }
 
   @Get(':id')

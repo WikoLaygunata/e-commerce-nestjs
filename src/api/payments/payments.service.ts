@@ -15,8 +15,12 @@ export class PaymentsService {
     return await this.paymentrepo.save(payment);
   }
 
-  async findAll() {
-    return await this.paymentrepo.find();
+  async findAll(params? : any) {
+    let data = await this.paymentrepo.find();
+    if(params.name){
+      data = (await data).filter(x=>x.name.toLowerCase().includes(params.name.toLowerCase()));
+    }
+    return data;
   }
 
   async findOne(id: number) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,8 +13,8 @@ export class UserController {
   }
 
   @Get()
-  async findAll() {
-    return this.userService.findAll();
+  async findAll(@Query() params : any) {
+    return this.userService.findAll(params);
   }
 
   @Get(':id')

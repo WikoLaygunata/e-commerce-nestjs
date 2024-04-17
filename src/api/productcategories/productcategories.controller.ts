@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ValidationPipe, Query } from '@nestjs/common';
 import { ProductcategoriesService } from './productcategories.service';
 import { CreateProductcategoryDto } from './dto/create-productcategory.dto';
 import { UpdateProductcategoryDto } from './dto/update-productcategory.dto';
@@ -13,8 +13,9 @@ export class ProductcategoriesController {
   }
 
   @Get()
-  async findAll() {
-    return this.productcategoriesService.findAll();
+  async findAll(@Query() params:any) {
+    return this.productcategoriesService.findAll(params);
+
   }
 
   @Get(':id')
