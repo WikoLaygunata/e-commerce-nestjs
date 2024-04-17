@@ -10,5 +10,6 @@ import { Order } from 'src/typeorm/entities/Order';
   imports:[TypeOrmModule.forFeature([User, Cart, Order])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {}

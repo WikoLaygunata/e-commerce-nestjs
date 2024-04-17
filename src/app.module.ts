@@ -17,6 +17,7 @@ import { User } from './typeorm/entities/User';
 import { Cart } from './typeorm/entities/Cart';
 import { Categories } from './typeorm/entities/Categories';
 import { Product } from './typeorm/entities/Product';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { Product } from './typeorm/entities/Product';
     PaymentsModule,
     OrdersModule,
     OrderdetailsModule,
-    DeliveriesModule],
+    DeliveriesModule,
+    AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
