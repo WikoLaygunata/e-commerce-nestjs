@@ -10,7 +10,7 @@ async function bootstrap() {
   .setTitle('e-commerce app')
   .setDescription('API')
   .setVersion('1.0')
-  .setExternalDoc('Postman Collection', '/docs-json')
+  .setExternalDoc('Postman Collection', '/api-json')
   .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
