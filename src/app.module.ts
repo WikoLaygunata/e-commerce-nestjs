@@ -18,24 +18,27 @@ import { Cart } from './typeorm/entities/Cart';
 import { Categories } from './typeorm/entities/Categories';
 import { Product } from './typeorm/entities/Product';
 import { AuthModule } from './auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}), 
+    MulterModule.register({ dest: './uploads' }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) =>({
+      useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: 'localhost',
         port: 3306,
         username: 'root',
         password: '',
-        database: configService.get("DATABASE"),
+        database: configService.get('DATABASE'),
         autoLoadEntities: true,
         synchronize: true,
       }),
-    inject: [ConfigService],
-  }),TypeOrmModule.forFeature([User, Cart, Categories, Product]),
+      inject: [ConfigService],
+    }),
+    TypeOrmModule.forFeature([User, Cart, Categories, Product]),
     UserModule,
     ProductsModule,
     CartsModule,
@@ -46,7 +49,8 @@ import { AuthModule } from './auth/auth.module';
     OrdersModule,
     OrderdetailsModule,
     DeliveriesModule,
-    AuthModule],
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -7,37 +7,58 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
-
-  constructor(@InjectRepository(Product) private readonly productrepo : Repository<Product>){}
+  constructor(
+    @InjectRepository(Product)
+    private readonly productrepo: Repository<Product>,
+  ) {}
 
   async create(createProductDto: CreateProductDto) {
     const product = this.productrepo.create(createProductDto);
-    return await this.productrepo.save(product);;
+    return await this.productrepo.save(product);
   }
 
   async findAll(params?: any) {
-    let data = await this.productrepo.find({relations: {unitcategory:true,categories:true}});
-    if(params.name){
-      data = (await data).filter(x=>x.name.toLowerCase().includes(params.name.toLowerCase()));
+    let data = await this.productrepo.find({
+      relations: { unitcategory: true, categories: true },
+    });
+    if (params.name) {
+      data = (await data).filter((x) =>
+        x.name.toLowerCase().includes(params.name.toLowerCase()),
+      );
     }
     return data;
   }
 
   async findOne(id: number) {
-    var data = await this.productrepo.findOne({where: {id:id}, relations:{unitcategory:true, categories:true}});
-    if(!data) throw new NotFoundException();
+    var data = await this.productrepo.findOne({
+      where: { id: id },
+      relations: { unitcategory: true, categories: true },
+    });
+    if (!data) throw new NotFoundException();
+    return data;
+  }
+
+  async findSlug(slug: string) {
+    var data = await this.productrepo.findOne({
+      where: { slug: slug },
+      relations: { unitcategory: true, categories: true },
+    });
+    if (!data) throw new NotFoundException();
     return data;
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    var data = await this.productrepo.findOne({where: {id:id}});
-    if(!data) throw new NotFoundException();
-    return await this.productrepo.update({id}, {...updateProductDto, updatedAt: new Date()});
+    var data = await this.productrepo.findOne({ where: { id: id } });
+    if (!data) throw new NotFoundException();
+    return await this.productrepo.update(
+      { id },
+      { ...updateProductDto, updatedAt: new Date() },
+    );
   }
 
   async remove(id: number) {
-    var data = await this.productrepo.findOne({where: {id:id}});
-    if(!data) throw new NotFoundException();
-    return await this.productrepo.delete({id});
+    var data = await this.productrepo.findOne({ where: { id: id } });
+    if (!data) throw new NotFoundException();
+    return await this.productrepo.delete({ id });
   }
 }
