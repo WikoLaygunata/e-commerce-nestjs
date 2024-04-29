@@ -21,6 +21,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { Response } from 'express';
+import { existsSync } from 'fs';
+import { join } from 'path';
 
 @Controller('products')
 export class ProductsController {
@@ -110,6 +112,8 @@ export class ProductsController {
   }
   @Get('image/:filename')
   async getImage(@Param('filename') filename: string, @Res() res: Response) {
-    res.sendFile(filename, { root: './uploads' });
+    if (existsSync(join(__dirname, `../../../uploads/${filename}`))) {
+      res.sendFile(filename, { root: './uploads' });
+    }
   }
 }
