@@ -12,6 +12,7 @@ import {
   UploadedFile,
   ParseFilePipeBuilder,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -19,6 +20,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { Response } from 'express';
 
 @Controller('products')
 export class ProductsController {
@@ -105,5 +107,9 @@ export class ProductsController {
     file: Express.Multer.File,
   ) {
     return file.filename;
+  }
+  @Get('image/:filename')
+  async getImage(@Param('filename') filename: string, @Res() res: Response) {
+    res.sendFile(filename, { root: './uploads' });
   }
 }
