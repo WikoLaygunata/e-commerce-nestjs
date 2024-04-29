@@ -25,7 +25,31 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  async create(@Body(ValidationPipe) createProductDto: CreateProductDto) {
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          const filename = `${uniqueSuffix}${ext}`;
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  async create(
+    @Body(ValidationPipe) createProductDto: CreateProductDto,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({ fileType: 'image/jpeg|image/png' })
+        .addMaxSizeValidator({ maxSize: 5 * 1024 * 1024 })
+        .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
+    )
+    file: Express.Multer.File,
+  ) {
+    createProductDto.image = file.filename;
     return this.productsService.create(createProductDto);
   }
 
@@ -55,7 +79,7 @@ export class ProductsController {
   async remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
   }
-  
+
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -80,6 +104,6 @@ export class ProductsController {
     )
     file: Express.Multer.File,
   ) {
-    return file;
+    return file.filename;
   }
 }
