@@ -11,5 +11,5 @@ export class CreateProductDto {
   slug: string;
   image?: string;
   description?: string;
-  categories: CreateProductcategoryDto[];
+  categories: string;
 }

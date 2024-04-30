@@ -3,17 +3,36 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/typeorm/entities/Product';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
+import { Categories } from 'src/typeorm/entities/Categories';
+import { log } from 'console';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productrepo: Repository<Product>,
+    @InjectRepository(Categories)
+    private readonly categoryrepo: Repository<Categories>,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
-    const product = this.productrepo.create(createProductDto);
+    const categoriesslug: string[] = JSON.parse(createProductDto.categories);
+    console.log(categoriesslug);
+    const objects: Categories[] = [];
+
+    const dt = await this.categoryrepo.find({
+      where: { name: In(categoriesslug) },
+    });
+
+    console.log(dt);
+
+    const newCreateDto = {
+      ...createProductDto,
+      categories: dt,
+    };
+    const product = this.productrepo.create(newCreateDto);
+    console.log(product);
     return await this.productrepo.save(product);
   }
 
@@ -48,12 +67,12 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    var data = await this.productrepo.findOne({ where: { id: id } });
-    if (!data) throw new NotFoundException();
-    return await this.productrepo.update(
-      { id },
-      { ...updateProductDto, updatedAt: new Date() },
-    );
+    // var data = await this.productrepo.findOne({ where: { id: id } });
+    // if (!data) throw new NotFoundException();
+    // return await this.productrepo.update(
+    //   { id },
+    //   { ...updateProductDto, updatedAt: new Date() },
+    // );
   }
 
   async remove(id: number) {
