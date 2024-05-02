@@ -18,21 +18,17 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
     const categoriesslug: string[] = JSON.parse(createProductDto.categories);
-    console.log(categoriesslug);
-    const objects: Categories[] = [];
 
     const dt = await this.categoryrepo.find({
       where: { name: In(categoriesslug) },
     });
 
-    console.log(dt);
 
     const newCreateDto = {
       ...createProductDto,
       categories: dt,
     };
     const product = this.productrepo.create(newCreateDto);
-    console.log(product);
     return await this.productrepo.save(product);
   }
 
